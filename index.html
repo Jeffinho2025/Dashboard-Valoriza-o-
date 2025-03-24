@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALORIZAÇÃO DO CARTOLA 2025 - Análises e Estatísticas</title>
+    <style>
+        :root {
+            --cor-primaria: #ff6600;
+            --cor-secundaria: #e55d00;
+            --fundo-escuro: #1a1a1a;
+            --texto-claro: #ffffff;
+        }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background: var(--fundo-escuro); 
+            color: var(--texto-claro); 
+            margin: 0; 
+            padding: 0; 
+            line-height: 1.6;
+        }
+        header { 
+            background: var(--cor-primaria); 
+            padding: 1.5rem; 
+            text-align: center; 
+            font-size: 1.5rem; 
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: slideDown 0.5s ease;
+        }
+        .container { 
+            width: 95%; 
+            max-width: 1200px; 
+            margin: 2rem auto; 
+            padding: 1rem; 
+        }
+        .filters { 
+            display: flex; 
+            gap: 1rem; 
+            margin-bottom: 2rem; 
+            justify-content: center; 
+            flex-wrap: wrap; 
+        }
+        .filters select, .filters button { 
+            padding: 0.8rem 1.2rem; 
+            border: none; 
+            border-radius: 8px; 
+            background: var(--cor-primaria); 
+            color: var(--texto-claro); 
+            cursor: pointer; 
+            min-width: 150px; 
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        .filters select:hover, .filters button:hover { 
+            background: var(--cor-secundaria); 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,102,0,0.3);
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 2rem; 
+            background: #222; 
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: fadeIn 1s ease;
+        }
+        th, td { 
+            padding: 1rem; 
+            border: 1px solid #333; 
+            text-align: left; 
+            transition: background 0.3s ease;
+        }
+        th { 
+            background: var(--cor-primaria); 
+            font-weight: 600;
+        }
+        tr {
+            animation: slideIn 0.5s ease forwards;
+            opacity: 0;
+        }
+        tr:nth-child(even) { background: #2a2a2a; }
+        tr:hover {
+            background: #333;
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .loading { 
+            text-align: center; 
+            font-size: 1.2rem; 
+            margin: 2rem 0; 
+            position: relative;
+        }
+        .loading::after {
+            content: "";
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--cor-primaria);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 1rem;
+        }
+        .card-detalhes { 
+            display: none; 
+            position: fixed; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            background: #222; 
+            color: var(--texto-claro); 
+            padding: 2rem; 
+            border-radius: 12px; 
+            width: 90%; 
+            max-width: 400px; 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            animation: modalOpen 0.3s ease;
+            z-index: 1000;
+        }
+        .overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.8); 
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+            z-index: 999;
+        }
+        .escudo { 
+            width: 30px; 
+            height: 30px; 
+            vertical-align: middle; 
+            margin-right: 0.5rem; 
+            transition: transform 0.3s ease;
+            object-fit: contain;
+        }
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                padding: 1rem;
+            }
+            .filters {
+                flex-direction: column;
+            }
+            .filters select, .filters button {
+                width: 100%;
+                min-width: unset;
+            }
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            th, td {
+                min-width: 150px;
+                font-size: 0.8rem;
+                padding: 0.5rem;
+            }
+            header {
+                font-size: 1.2rem;
+                padding: 1rem;
+            }
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes modalOpen {
+            from { transform: translate(-50%, -40%); opacity: 0; }
+            to { transform: translate(-50%, -50%); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+<header>VALORIZAÇÃO DO CARTOLA 2025 - Análises e Estatísticas (Beta) G4 do Cartola</header>
+<div class="container">
+    <h2>Jogadores</h2>
+    <div class="filters">
+        <select id="filtro-time"><option value="">Todos os Times</option></select>
+        <select id="filtro-posicao"><option value="">Todas as Posições</option></select>
+        <select id="filtro-preco"><option value="">Preço</option><option value="mais-barato">Mais Baratos</option><option value="mais-caro">Mais Caros</option></select>
+        <select id="filtro-status"><option value="">Status</option></select>
+        <button id="limpar-filtros">Limpar Filtros</button>
+    </div>
+    <div class="loading" id="loading-jogadores">Carregando jogadores...</div>
+    <table id="tabela-jogadores">
+        <thead><tr><th>Nome</th><th>Posição</th><th>Clube</th><th>Status</th><th>Preço (C$)</th><th>Mínimo para Valorizar</th></tr></thead>
+        <tbody></tbody>
+    </table>
+</div>
+<div class="overlay" id="overlay"></div>
+<div class="card-detalhes" id="card-detalhes">
+    <h3 id="card-titulo">Detalhes do Jogador</h3>
+    <p id="card-conteudo"></p>
+    <button id="fechar-card">Fechar</button>
+</div>
+<script>
+    let jogadoresData = [];
+    let clubes = {};
+    let posicoes = {};
+    let statusJogadores = {};
+    // Configurar event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarDados();
+        document.getElementById('filtro-time').addEventListener('change', aplicarFiltros);
+        document.getElementById('filtro-posicao').addEventListener('change', aplicarFiltros);
+        document.getElementById('filtro-preco').addEventListener('change', aplicarFiltros);
+        document.getElementById('filtro-status').addEventListener('change', aplicarFiltros);
+        document.getElementById('limpar-filtros').addEventListener('click', limparFiltros);
+        document.getElementById('fechar-card').addEventListener('click', fecharDetalhes);
+        document.getElementById('overlay').addEventListener('click', fecharDetalhes);
+    });
+    async function carregarDados() {
+        try {
+            const response = await fetch("https://api.cartola.globo.com/atletas/mercado", {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
+            if (!response.ok) throw new Error('Erro na resposta da API');
+            const mercado = await response.json();
+            if (!mercado.atletas || !mercado.clubes) {
+                throw new Error('Estrutura da API alterada');
+            }
+            jogadoresData = mercado.atletas;
+            clubes = mercado.clubes;
+            posicoes = mercado.posicoes;
+            statusJogadores = mercado.status;
+            popularFiltros();
+            aplicarFiltros();
+            document.getElementById("loading-jogadores").style.display = "none";
+        } catch (error) {
+            console.error("Erro ao carregar dados:", error);
+            document.getElementById("loading-jogadores").innerHTML = 
+                "Erro ao carregar dados. Tente recarregar a página.<br>" + error.message;
+        }
+    }
+    function popularFiltros() {
+        const filtroTime = document.getElementById("filtro-time");
+        const filtroPosicao = document.getElementById("filtro-posicao");
+        const filtroStatus = document.getElementById("filtro-status");
+        Object.values(clubes).forEach(clube => {
+            filtroTime.innerHTML += `<option value="${clube.id}">${clube.nome}</option>`;
+        });
+        Object.values(posicoes).forEach(posicao => {
+            filtroPosicao.innerHTML += `<option value="${posicao.id}">${posicao.nome}</option>`;
+        });
+        Object.values(statusJogadores).forEach(status => {
+            filtroStatus.innerHTML += `<option value="${status.id}">${status.nome}</option>`;
+        });
+    }
+    function aplicarFiltros() {
+        const timeSelecionado = document.getElementById("filtro-time").value;
+        const posicaoSelecionada = document.getElementById("filtro-posicao").value;
+        const precoSelecionado = document.getElementById("filtro-preco").value;
+        const statusSelecionado = document.getElementById("filtro-status").value;
+        let jogadoresFiltrados = [...jogadoresData];
+        if (timeSelecionado) {
+            jogadoresFiltrados = jogadoresFiltrados.filter(j => j.clube_id == timeSelecionado);
+        }
+        if (posicaoSelecionada) {
+            jogadoresFiltrados = jogadoresFiltrados.filter(j => j.posicao_id == posicaoSelecionada);
+        }
+        if (statusSelecionado) {
+            jogadoresFiltrados = jogadoresFiltrados.filter(j => j.status_id == statusSelecionado);
+        }
+        if (precoSelecionado === "mais-barato") {
+            jogadoresFiltrados.sort((a, b) => (a.preco_num || 0) - (b.preco_num || 0));
+        } else if (precoSelecionado === "mais-caro") {
+            jogadoresFiltrados.sort((a, b) => (b.preco_num || 0) - (a.preco_num || 0));
+        }
+        renderizarJogadores(jogadoresFiltrados);
+    }
+    function limparFiltros() {
+        document.querySelectorAll('.filters select').forEach(select => {
+            select.value = '';
+        });
+        aplicarFiltros();
+    }
+    function renderizarJogadores(dados) {
+        const tabela = document.querySelector("#tabela-jogadores tbody");
+        if (!tabela) {
+            console.error('Elemento tabela não encontrado');
+            return;
+        }
+        tabela.innerHTML = "";
+        dados.forEach((jogador, index) => {
+            const clube = clubes[jogador.clube_id] || {};
+            const posicao = posicoes[jogador.posicao_id] || {};
+            const status = statusJogadores[jogador.status_id] || {};
+            const row = document.createElement('tr');
+            row.style.animationDelay = `${index * 0.05}s`;
+            row.innerHTML = `
+                <td>${jogador.apelido || 'N/A'}</td>
+                <td>${posicao.nome || 'Desconhecida'}</td>
+                <td><img src="${clube.escudos?.["60x60"] || ''}" class="escudo" alt="${clube.nome}"> ${clube.nome || 'Sem clube'}</td>
+                <td>${status.nome || 'Desconhecido'}</td>
+                <td>C$ ${(jogador.preco_num || 0).toFixed(2)}</td>
+                <td>${((jogador.preco_num || 0) * 0.54).toFixed(2)} pts</td>
+            `;
+            row.addEventListener('click', () => mostrarDetalhes(jogador));
+            tabela.appendChild(row);
+        });
+    }
+    function mostrarDetalhes(jogador) {
+        const clube = clubes[jogador.clube_id] || {};
+        const posicao = posicoes[jogador.posicao_id] || {};
+        const status = statusJogadores[jogador.status_id] || {};
+        document.getElementById('card-titulo').textContent = jogador.apelido || 'Jogador Desconhecido';
+        document.getElementById('card-conteudo').innerHTML = `
+            <p>Clube: ${clube.nome || 'Desconhecido'}</p>
+            <p>Posição: ${posicao.nome || 'Desconhecida'}</p>
+            <p>Status: ${status.nome || 'Desconhecido'}</p>
+            <p>Preço Atual: C$ ${(jogador.preco_num || 0).toFixed(2)}</p>
+            <p>Mínimo para Valorizar: ${((jogador.preco_num || 0) * 0.54).toFixed(2)} pts</p>
+        `;
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('card-detalhes').style.display = 'block';
+    }
+    function fecharDetalhes() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('card-detalhes').style.display = 'none';
+    }
+</script>
+</body>
+</html>
